@@ -6,7 +6,11 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb2d;
+
+
     public AudioClip MusicClip;
+
+    Animator anim;
     public AudioSource MusicSource;
     public Text countText;
     public Text winText;
@@ -27,12 +31,14 @@ public class PlayerController : MonoBehaviour
     {
         count = 0;
         rb2d = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator> ();
        MusicSource.clip = MusicClip;
         lives = 3;
         teleport = 0;
         SetCountText ();
         
         SetLivesText ();
+         
 
         winText.text = "";
     }
@@ -40,7 +46,25 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+         if(Input.GetKey (KeyCode.RightArrow)){
+           
+             anim.SetInteger("New Int", 1);
+        }
+        if(Input.GetKey (KeyCode.LeftArrow)){
+            anim.SetInteger("New Int", 3);
+        }
+        if (Mathf.Abs(Input.GetAxis("Horizontal")) <= 0.1){
+             
+        anim.SetInteger("New Int", 0);
+       }
+       if (Mathf.Abs(Input.GetAxis("Vertical")) >= .1){
+             
+        anim.SetInteger("New Int", 2);
+       }
+       if(Input.GetKey (KeyCode.UpArrow)){
+           anim.SetInteger("New Int", 2);
+       }
+
     }
 
  void OnTriggerEnter2D(Collider2D other){
@@ -89,6 +113,9 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+         if(collision.collider.tag != "Ground"){
+           
+         }
     }
 
     void SetCountText(){
